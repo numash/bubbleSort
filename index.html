@@ -1,1 +1,21 @@
-hello world
+<!DOCTYPE html>
+<html>
+	<meta charset="utf-8" author="Masha Malyschenko"/>
+	<head>
+		<title>BubbleSort</title>		
+		<link rel="stylesheet" type="text/css" href="all.css">
+		<script type="text/javascript" src="script.js"></script>
+	</head>
+	<body onload="onReset()"> 
+		<div id="nodeDiv">
+			<input type="text" class="node" onblur="sortPermission(event)" id="node0"/>
+			<input type="text" class="node" onblur="sortPermission(event)" id="node1"/>
+			<input type="button" id="newNode" value="+" onclick="onPlusPress()"/>
+		</div>
+		<button type="button" id="resetBtn" onclick="onReset()">Reset</button>
+		<button type="button" id="nextStepBtn" disabled="disabled" onclick="startSort()">Next step</button>
+		<div style="visibility:hidden;" id="message">You reached max length of array</div>	
+	</body>
+</html>
+
+

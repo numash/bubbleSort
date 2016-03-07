@@ -1,0 +1,19 @@
+.node{
+    width: 30px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+
+#newNode{
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+#resetBtn{
+    margin-top: 5px;
+}
+
+#nextBtn{
+    margin-top: 5px;
+}
