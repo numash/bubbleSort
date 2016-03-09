@@ -4,8 +4,20 @@
     margin-right: 5px;
 }
 
+.activeNode{
+    background-color: lightgreen;
+}
 
-#newNode{
+.stableNode{
+    background-color: lightgray;
+    font-weight: bold;
+}
+
+.invalidNode{
+    border-color: red;
+}
+
+#newNodeBtn{
     margin-left: 5px;
     margin-right: 5px;
 }
@@ -14,6 +26,17 @@
     margin-top: 5px;
 }
 
-#nextBtn{
+#nextStepBtn{
     margin-top: 5px;
+}
+
+#mainContainer{
+    margin-top: 25px;
+}
+
+#title{
+    font-family: "Palatino Linotype", "Book Antiqua", Georgia;
+    font-size: 25px;
+    text-align: center;
+    font-weight: bold;
 }

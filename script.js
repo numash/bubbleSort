@@ -1,127 +1,122 @@
 'use strict';
 
-var arr = [];
-
-function createNode(){
-	var node = document.createElement('input');
-	node.type = "text";
-	node.className = "node";
-	node.id = "node".concat(arr.length);
-	node.onblur = sortPermission;
-	arr.push({
-		isValid: false,
-		value: ""
-	});
-	currentStablePosition++;
-	var nextStepBtn = document.getElementById("nextStepBtn");
-	disableButton(nextStepBtn);
-	return node;
-}
+var arrayService = getArrayService();
 
 function screenPermission(){
 	var width = document.body.clientWidth;
-	var newNode = document.getElementById("newNode");
-    if ((width - newNode.getBoundingClientRect().right) < 45) {
+	var newNodeBtn = document.getElementById("newNodeBtn");
+    if ((width - newNodeBtn.getBoundingClientRect().right) < 45) {
     	return false;
     }
     return true;
 }
 
+function createNode(){
+	var node = document.createElement('input');
+	node.type = "text";
+	node.className = "node";
+	node.id = "node".concat(arrayService.getLength());
+	node.onblur = nodePermission;
+	arrayService.push(node);
+	var nextStepBtn = document.getElementById("nextStepBtn");
+	disableButton(nextStepBtn);
+	return node;
+}
+
 function onPlusPress(event){
 	if (screenPermission()){
 		var nodeDiv = document.getElementById("nodeDiv");
-		var newNode = document.getElementById("newNode");
+		var newNodeBtn = document.getElementById("newNodeBtn");
 		var node = createNode();
-		nodeDiv.insertBefore(node, newNode);
+		nodeDiv.insertBefore(node, newNodeBtn);
 	} else {
-		var plusBtn = document.getElementById("newNode");
-		plusBtn.disabled = true;
-		var message = document.getElementById("message");
-		message.style.visibility = "visible";
+		var plusBtn = document.getElementById("newNodeBtn");
+		disableButton(plusBtn);
+		$("#message").show();
+		//showMessage();
 	}
 }
 
-function disableButton(btn){
-	btn.disabled = true;
-}
-
-function enableButton(btn){
-	btn.disabled = false;
-}
-
-function isValidNumber(number) {
-	return number == (+number).toString(); //двойное преобразование, 0.toString != пустой строке.
-}
-
-function isArrayValid(arr){
-	if (!arr.every || typeof arr.every != "function"){
-		return false;
-	}
-	return arr.every(function(element){
-		return element.isValid === true;
-	});
-}
-
-function sortPermission(event){
+function nodePermission(event){
 	var input = event.target;
-	var inputId = input.id;
-	var index = +inputId.slice(4);
 	var currentValue = input.value;
-	var nextStepBtn = document.getElementById("nextStepBtn");
-	if (isValidNumber(currentValue)){
-		arr[index].isValid = true;
-		arr[index].value = +currentValue;
-		input.style = "border-color: none";
-		if (isArrayValid(arr)){
-			enableButton(nextStepBtn);
-		} else {
-			disableButton(nextStepBtn);
-		}
-	} else {
-		disableButton(nextStepBtn);
-		arr[index].isValid = false;
-		arr[index].value = +currentValue;
-		input.style = "border-color: red";
+	var inputId = input.id;
+	
+	arrayService.updateNode(input);
+	if (arrayService.isNodeValid(+input.id.slice(4))){
+		$("#"+inputId).removeClass("invalidNode");	
 	}
+	else{
+		$("#"+inputId).addClass("invalidNode");
+	}
+	var nextStepBtn = document.getElementById("nextStepBtn");
+	if (arrayService.isArrayValid()){
+		enableButton(nextStepBtn);
+	} else{
+		disableButton(nextStepBtn);
+	}
+}
+
+function reloadPage(){
+	var node0 = document.getElementById("node0");
+	var node1 = document.getElementById("node1");
+	node0.value = "";
+	node1.value = "";
+	node0.disabled = false;
+	node1.disabled = false;
+	
+	unlightNode(node0.id);
+	unlightNode(node1.id);
+	unlightNodeAsStable(node0.id);
+	unlightNodeAsStable(node1.id);
+	$("#node0").removeClass("invalidNode");
+	$("#node1").removeClass("invalidNode");
+	$("#message").hide();
+	//hideMessage();
+	
+	var newNodeBtn = document.getElementById("newNodeBtn");
+	enableButton(newNodeBtn);
+	var nextStepBtn = document.getElementById("nextStepBtn");
+	disableButton(nextStepBtn);
+	
+	arrayService.initArray([node0, node1]);
+}
+
+function onLoad(){
+	reloadPage();
 }
 
 function onReset() {
-	var nextStepBtn = document.getElementById("nextStepBtn");
-	disableButton(nextStepBtn);
 	var nodeDiv = document.getElementById("nodeDiv");
-	
-	for (var i = arr.length-1; i > 1; i--){
+	for (var i = arrayService.getLength()-1; i > 1; i--){
 		var node = document.getElementById("node".concat(i));
 		nodeDiv.removeChild(node);
 	}
-	var node0 = document.getElementById("node0");
-	node0.value = "";
-	node0.style = "border-color:none; background-color:none";
-	var node1 = document.getElementById("node1");
-	node1.value = "";
-	node1.style = "border-color:none; background-color:none";
-	var message = document.getElementById("message");
-	message.style.visibility = "hidden";
-	
-	arr = [
-	{
-		isValid: false,
-		value: ""
-	},
-	{
-		isValid: false,
-		value: ""
-	}];
-	
-	currentStablePosition = arr.length;
+	$("#nextStepBtn").show();	
+	reloadPage();
 }
-
-var currentArrPosition = 0,
-	currentStablePosition;
 
 function startSort(){
 	toSortMode();
-    if (currentArrPosition < currentStablePosition-1){
+	var stepResult = arrayService.sortStep();
+	
+	if (stepResult.newStableNodeIds[1] === "node0"){
+		$("#nextStepBtn").hide();
+	}
+	
+	stepResult.prevNodeIds.forEach(function(nodeId){
+		unlightNode(nodeId);
+	});
+	
+	stepResult.activeNodeIds.forEach(function(nodeId){
+		highlightNode(nodeId);
+	});
+	
+	stepResult.newStableNodeIds.forEach(function(nodeId){
+		highlightNodeAsStable(nodeId);
+	});
+	
+    /*if (currentArrPosition < currentStablePosition-1){
     	bubbleSort();
     } else {
     	unlightNodes();
@@ -134,70 +129,51 @@ function startSort(){
     		
 			var nextStepBtn = document.getElementById("nextStepBtn");
 			disableButton(nextStepBtn);
-    	}else{
+    	} else{
 			startSort();
     	}
-    }
+    }*/
 }
 
 function toSortMode() {
-	for (var i = 0; i < arr.length; i++){
+	for (var i = 0; i < arrayService.getLength(); i++){
 		var node = document.getElementById("node".concat(i));
 		node.disabled = true;
 	}
-	var newNode = document.getElementById("newNode");
-	newNode.disabled = true;
+	var newNodeBtn = document.getElementById("newNodeBtn");
+	disableButton(newNodeBtn);
 }
 
-function bubbleSort() {
-	unlightNodes();
-	highlightNodes();
-    if (arr[currentArrPosition+1].value < arr[currentArrPosition].value) { 
-		bubbleSortStep();
-	}
-	currentArrPosition++;
+function showMessage(){
+	var message = document.getElementById("message");
+	message.style.visibility = "visible";
 }
 
-function bubbleSortStep(){
-	var t = arr[currentArrPosition + 1].value;
-	arr[currentArrPosition + 1].value = arr[currentArrPosition].value;
-	arr[currentArrPosition].value = t;
-	
-	var firstNode = document.getElementById("node".concat(currentArrPosition));
-	var secondNode = document.getElementById("node".concat(currentArrPosition + 1));
-	firstNode.value = arr[currentArrPosition].value;
-	secondNode.value = arr[currentArrPosition + 1].value;
+function hideMessage(){
+	var message = document.getElementById("message");
+	message.style.visibility = "hidden";
 }
 
-function highlightNodes(){
-	var firstNode = document.getElementById("node".concat(currentArrPosition));
-	var secondNode = document.getElementById("node".concat(currentArrPosition + 1));
-	highlightNode(firstNode);
-	highlightNode(secondNode);
+function disableButton(btn){
+	btn.disabled = true;
 }
 
-function unlightNodes(){
-	if (currentArrPosition !== 0){
-		var firstNode = document.getElementById("node".concat(currentArrPosition - 1));
-		var secondNode = document.getElementById("node".concat(currentArrPosition));
-		unlightNode(firstNode);
-		unlightNode(secondNode);
-	}
+function enableButton(btn){
+	btn.disabled = false;
 }
 
-function highlightCurrentStableNode(){
-	var node = document.getElementById("node".concat(currentStablePosition));
-	highlightNodeAsStable(node);
+function highlightNode(nodeId){
+	$("#"+nodeId).addClass("activeNode");
 }
 
-function highlightNode(node){
-	node.style = "background-color: lightgreen";
+function highlightNodeAsStable(nodeId){
+	$("#"+nodeId).addClass("stableNode");
 }
 
-function highlightNodeAsStable(node){
-	node.style = "background-color: gray";
+function unlightNodeAsStable(nodeId){
+	$("#"+nodeId).removeClass("stableNode");
 }
 
-function unlightNode(node){
-	node.style = "background-color: none";
+function unlightNode(nodeId){
+	$("#"+nodeId).removeClass("activeNode");
 }

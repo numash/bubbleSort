@@ -4,17 +4,22 @@
 	<head>
 		<title>BubbleSort</title>		
 		<link rel="stylesheet" type="text/css" href="all.css">
+		<script type="text/javascript" src="jquery-1.12.1.min.js"></script>
+		<script type="text/javascript" src="arrayService.js"></script>
 		<script type="text/javascript" src="script.js"></script>
 	</head>
-	<body onload="onReset()"> 
-		<div id="nodeDiv">
-			<input type="text" class="node" onblur="sortPermission(event)" id="node0"/>
-			<input type="text" class="node" onblur="sortPermission(event)" id="node1"/>
-			<input type="button" id="newNode" value="+" onclick="onPlusPress()"/>
+	<body onload="onLoad()">
+		<div id="mainContainer">
+			<div id="title">Bubble sort in action</div>
+			<div id="nodeDiv">
+				<input type="text" class="node" onblur="nodePermission(event)" id="node0"/>
+				<input type="text" class="node" onblur="nodePermission(event)" id="node1"/>
+				<input type="button" id="newNodeBtn" value="+" onclick="onPlusPress()"/>
+			</div>
+			<button type="button" id="resetBtn" onclick="onReset()">Reset</button>
+			<button type="button" id="nextStepBtn" disabled="disabled" onclick="startSort()">Next step</button>
+			<div id="message">You've reached max array length</div>	
 		</div>
-		<button type="button" id="resetBtn" onclick="onReset()">Reset</button>
-		<button type="button" id="nextStepBtn" disabled="disabled" onclick="startSort()">Next step</button>
-		<div style="visibility:hidden;" id="message">You reached max length of array</div>	
 	</body>
 </html>
 
