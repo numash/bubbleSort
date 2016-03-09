@@ -33,7 +33,6 @@ function onPlusPress(event){
 		var plusBtn = document.getElementById("newNodeBtn");
 		disableButton(plusBtn);
 		$("#message").show();
-		//showMessage();
 	}
 }
 
@@ -72,7 +71,6 @@ function reloadPage(){
 	$("#node0").removeClass("invalidNode");
 	$("#node1").removeClass("invalidNode");
 	$("#message").hide();
-	//hideMessage();
 	
 	var newNodeBtn = document.getElementById("newNodeBtn");
 	enableButton(newNodeBtn);
@@ -115,24 +113,6 @@ function startSort(){
 	stepResult.newStableNodeIds.forEach(function(nodeId){
 		highlightNodeAsStable(nodeId);
 	});
-	
-    /*if (currentArrPosition < currentStablePosition-1){
-    	bubbleSort();
-    } else {
-    	unlightNodes();
-    	currentArrPosition = 0;
-    	currentStablePosition--;
-    	highlightCurrentStableNode();
-    	if (currentStablePosition === 1){
-    		currentStablePosition--;
-    		highlightCurrentStableNode();
-    		
-			var nextStepBtn = document.getElementById("nextStepBtn");
-			disableButton(nextStepBtn);
-    	} else{
-			startSort();
-    	}
-    }*/
 }
 
 function toSortMode() {
