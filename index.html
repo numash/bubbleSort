@@ -14,11 +14,11 @@
 			<div id="nodeDiv">
 				<input type="text" class="node" onblur="nodePermission(event)" id="node0"/>
 				<input type="text" class="node" onblur="nodePermission(event)" id="node1"/>
-				<input type="button" id="newNodeBtn" value="+" onclick="onPlusPress()"/>
+				<input type="button" id="newNodeBtn" value="+" onclick="onPlusPress()" class="btn"/>
 			</div>
-			<button type="button" id="resetBtn" onclick="onReset()">Reset</button>
-			<button type="button" id="nextStepBtn" disabled="disabled" onclick="startSort()">Next step</button>
-			<div id="message">You've reached max array length</div>	
+			<button type="button" id="resetBtn" onclick="onReset()" class="btn">Reset</button>
+			<button type="button" id="nextStepBtn" disabled="disabled" onclick="startSort()" class="btn">Next step</button>
+			<div id="message"><span>You've reached max array length</span></div>	
 		</div>
 	</body>
 </html>

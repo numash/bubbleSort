@@ -5,7 +5,7 @@ describe("arrayService", function() {
         arrayService = getArrayService();
     });
 
-    describe("arrayService.initArray", function() {
+    describe("initArray", function() {
 
         it("inites with empty array in case of call without args", function() {
             var expectedArrayLength = 0;
@@ -48,7 +48,7 @@ describe("arrayService", function() {
 
     });
 
-    describe("arrayService.push", function() {
+    describe("push", function() {
 
         it("returns array without changes in case of call with incorrect id", function() {
             var startArrayLength = arrayService.getLength();
@@ -105,7 +105,7 @@ describe("arrayService", function() {
 
     });
 
-    describe("arrayService.isArrayValid", function() {
+    describe("isArrayValid", function() {
 
         it("returns True when each element value is valid", function() {
             var elem0 = {
@@ -173,7 +173,7 @@ describe("arrayService", function() {
         });
     });
 
-    describe("arrayService.isNodeValid", function() {
+    describe("isNodeValid", function() {
 
         it("throws error 'undefined node' when nodeId is invalid", function() {
             var nodeId = "";
@@ -210,7 +210,7 @@ describe("arrayService", function() {
 
     });
     
-    describe("arrayService.updateNode", function() {
+    describe("updateNode", function() {
 
         it("throws error when node is undefined", function() {
             assert.throws(arrayService.updateNode);
@@ -239,7 +239,7 @@ describe("arrayService", function() {
 
     });
     
-    describe("arrayService.swapNodes", function() {
+    describe("swapNodes", function() {
 
         it("throws error when args are undefined", function() {
             assert.throws(arrayService.swapNodes, "undefined node.id");
@@ -277,4 +277,83 @@ describe("arrayService", function() {
 
     });
     
+    describe("sortStep", function() {
+       
+       var elem0, elem1, elem2, elem3, elem4;
+       beforeEach(function() {
+           elem0 = {
+                id: "node0",
+                value: 0
+           };
+           elem1 = {
+                id: "node1",
+                value: 100
+           };
+           elem2 = {
+                id: "node2",
+                value: -17
+           };
+           elem3 = {
+                id: "node3",
+                value: 3.14
+           };
+            elem4 = {
+                id: "node4",
+                value: 7
+            };
+       });
+       
+       it("makes active two first elems", function(){
+            var expectedResult = {
+                activeNodeIds: [elem0.id, elem1.id],
+                newStableNodeIds: [],
+                prevNodeIds: [elem4.id]
+            };
+            
+            arrayService.initArray([elem0, elem1, elem2, elem3, elem4]);
+            var actualResult = arrayService.sortStep();
+            assert.equal(expectedResult.activeNodeIds.toString(), actualResult.activeNodeIds.toString());
+            assert.equal(expectedResult.newStableNodeIds.toString(), actualResult.newStableNodeIds.toString());
+            assert.equal(expectedResult.prevNodeIds.toString(), actualResult.prevNodeIds
+            .toString());
+       });
+       
+       it("makes active two last elems", function(){
+            var expectedResult = {
+                activeNodeIds: [elem3.id, elem4.id],
+                newStableNodeIds: [],
+                prevNodeIds: [elem3.id, elem2.id]
+            };
+            
+            arrayService.initArray([elem0, elem1, elem2, elem3, elem4]);
+            arrayService.sortStep();
+            arrayService.sortStep();
+            arrayService.sortStep();
+            var actualResult = arrayService.sortStep();
+            assert.equal(expectedResult.activeNodeIds.toString(), actualResult.activeNodeIds.toString());
+            assert.equal(expectedResult.newStableNodeIds.toString(), actualResult.newStableNodeIds.toString());
+            assert.equal(expectedResult.prevNodeIds.toString(), actualResult.prevNodeIds
+            .toString());
+       });
+       
+       it("makes stable last elem", function(){
+            var expectedResult = {
+                activeNodeIds: [],
+                newStableNodeIds: [elem4.id],
+                prevNodeIds: [elem4.id, elem3.id]
+            };
+            
+            arrayService.initArray([elem0, elem1, elem2, elem3, elem4]);
+            arrayService.sortStep();
+            arrayService.sortStep();
+            arrayService.sortStep();
+            arrayService.sortStep();
+            var actualResult = arrayService.sortStep();
+            assert.equal(expectedResult.activeNodeIds.toString(), actualResult.activeNodeIds.toString());
+            assert.equal(expectedResult.newStableNodeIds.toString(), actualResult.newStableNodeIds.toString());
+            assert.equal(expectedResult.prevNodeIds.toString(), actualResult.prevNodeIds
+            .toString());
+       });
+       
+    });
 });

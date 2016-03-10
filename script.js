@@ -69,7 +69,9 @@ function reloadPage(){
 	unlightNodeAsStable(node0.id);
 	unlightNodeAsStable(node1.id);
 	$("#node0").removeClass("invalidNode");
+	$("#node0").removeClass("sortNode");
 	$("#node1").removeClass("invalidNode");
+	$("#node1").removeClass("sortNode");
 	$("#message").hide();
 	
 	var newNodeBtn = document.getElementById("newNodeBtn");
@@ -117,8 +119,9 @@ function startSort(){
 
 function toSortMode() {
 	for (var i = 0; i < arrayService.getLength(); i++){
-		var node = document.getElementById("node".concat(i));
-		node.disabled = true;
+		var node = $("#node".concat(i));
+		node[0].disabled = true;
+		node.addClass("sortNode");
 	}
 	var newNodeBtn = document.getElementById("newNodeBtn");
 	disableButton(newNodeBtn);
