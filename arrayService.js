@@ -11,6 +11,8 @@ function getArrayService(){
     function isValidNumber(number) {
 	    return number == (+number).toString(); //двойное преобразование, 0.toString != пустой строке.
     }
+    arrayService.isValidNumber = isValidNumber;
+    
     //init with two default elements
     arrayService.initArray = function(nodes) {    
         arr = [];
@@ -83,7 +85,7 @@ function getArrayService(){
     
     arrayService.isNodeValid = function(nodeId){
         if (!arr[nodeId]){
-            throw new Error("undefined node");
+            throw new Error("value");
         }
         return arr[nodeId].isValid;
     }
@@ -100,6 +102,7 @@ function getArrayService(){
     		value: +node.value,
     		node: node
         }
+        return true;
     }
     
     arrayService.swapNodes = function(firstNodeId, secondNodeId){
@@ -112,6 +115,7 @@ function getArrayService(){
         
         swapValues(firstNodeId, secondNodeId);
         swapNodeValues(firstNodeId, secondNodeId);
+        return true;
     }
     
     function swapValues(firstNodeId, secondNodeId){
