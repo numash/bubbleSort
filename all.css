@@ -1,0 +1,100 @@
+.node{
+    width: 35px;
+    margin-left: 5px;
+    margin-right: 5px;
+    
+    max-width: 40px;
+    padding: 5px 5px 5px 5px;
+    background-color: #FFDEAD;
+    font: 15px "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+}
+
+.sortNode{
+    border-style: solid;
+    border-width: 0px 0px 3px;
+    box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.1) inset;
+    color: #FFFFFF;	  
+    background-color: #E67E22;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-block;
+    font-style: normal;
+    overflow: hidden;
+    text-align: center;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.activeNode{
+    background-color: green;
+}
+
+.stableNode{
+    background-color: gray;
+    font-weight: bold;
+}
+
+.invalidNode{
+    border-color: red;
+}
+
+.btn{
+    margin-top: 5px;
+    border-radius: 5px;
+    padding: 5px 10px;
+    text-decoration: none;
+    color: #fff;
+    position: relative;
+    display: inline-block;
+    background-color: #e67e22;
+    box-shadow: 0px 1px 0px 0px #CD6509;
+}
+
+.btn:active {
+    transform: translate(0px, 3px);
+    box-shadow: 0px 1px 0px 0px;
+}
+
+.btn:hover{
+    background-color: #FF983C;
+}
+
+.btn:disabled{
+    background-color: #BEBEBE;
+    color: white;
+    box-shadow: 0px 1px 0px 0px #778899;
+}
+
+#newNodeBtn{
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+#mainContainer{
+    margin-top: 25px;
+}
+
+#title{
+    font-family: "Palatino Linotype", "Book Antiqua", Georgia;
+    font-size: 25px;
+    text-align: center;
+    font-weight: bold;
+}
+
+#message{
+    font: 22px "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+    font-weight: bold;
+    color: red;
+    vertical-align: center;
+    text-align: center;
+    margin-top: 20px;
+}
+
+#message span{
+    border-style: solid;
+    border-color: red;
+    border-width: 3px;
+}
+
+
